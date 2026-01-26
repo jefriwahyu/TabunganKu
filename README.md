@@ -13,7 +13,6 @@ Aplikasi manajemen tabungan dengan fitur deteksi uang menggunakan kamera (AI-pow
 2. **Login**
    - UI modern dengan gradient background
    - Form validation
-   - Default credentials: admin/admin
 
 3. **Dashboard dengan Tab Navigation**
    - **Tab Tabungan Aktif**: Menampilkan daftar tabungan yang masih berjalan
@@ -175,8 +174,8 @@ Aplikasi akan berjalan di:
 ### 1. Login
 - Buka aplikasi
 - Tunggu splash screen (2.5 detik)
-- Masukkan username: `admin`
-- Masukkan password: `admin`
+- Masukkan username: `solehud1n`
+- Masukkan password: `1_5`
 - Klik "Masuk"
 
 ### 2. Buat Tabungan Baru
