@@ -222,7 +222,7 @@
                   📦
                 </div>
                 <div class="flex-1">
-                  <h3 class="font-black text-2xl text-gray-800 mb-2">{{ plan.name }}</h3>
+                  <h3 class="pb-3 font-black text-2xl text-gray-800 mb-2">{{ plan.name }}</h3>
                   <div class="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-50 to-teal-50 px-4 py-2 rounded-full border border-emerald-200">
                     <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -236,7 +236,7 @@
               </div>
 
               <!-- Action Buttons -->
-              <div class="flex gap-3">
+              <div class="flex gap-3 pt-4">
                 <button 
                   @click="openDetail(plan)"
                   class="px-6 py-3 bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-600 rounded-2xl font-bold hover:shadow-lg hover:scale-105 transition-all duration-300 border-2 border-emerald-200"

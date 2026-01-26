@@ -25,23 +25,23 @@
         </div>
 
         <!-- App Title with Gradient Text -->
-        <h1 class="text-6xl md:text-7xl font-black mb-8 bg-gradient-to-r from-yellow-200 via-pink-200 to-purple-200 bg-clip-text text-transparent drop-shadow-lg animate-fade-in">
+        <h1 class="text-6xl pb-3 md:text-7xl font-black mb-8 bg-gradient-to-r from-yellow-200 via-pink-200 to-purple-200 bg-clip-text text-transparent drop-shadow-lg animate-fade-in">
           TabunganKu
         </h1>
-        
+        <br>
         <!-- Subtitle with elegant style -->
-        <div class="mb-10 relative px-4">
+        <div class="mb-10 relative px-3">
           <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent h-px top-1/2 opacity-20"></div>
           <p class="relative text-lg md:text-xl text-yellow-100 font-light italic px-8 py-3 bg-gradient-to-br from-indigo-900/80 via-purple-800/80 to-pink-700/80 inline-block rounded-full backdrop-blur-sm border border-white/10">
             "Sedikit demi sedikit, lama-lama menjadi bukit."
           </p>
         </div>
-        
+        <br>
         <!-- Description -->
         <p class="text-base md:text-lg text-purple-100 font-medium mb-12 px-6">
           Kelola tabunganmu dengan <span class="text-yellow-300 font-bold">AI Scanner</span> 💰✨
         </p>
-
+        <br>
         <!-- Loading Animation -->
         <div class="flex items-center justify-center space-x-3 mt-8">
           <div class="w-3 h-3 bg-yellow-300 rounded-full animate-bounce shadow-lg shadow-yellow-300/50"></div>

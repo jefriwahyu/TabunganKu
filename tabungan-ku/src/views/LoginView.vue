@@ -24,9 +24,9 @@
       </div>
 
       <!-- Title -->
-      <div class="text-center mb-8">
+      <div class="text-center mb-8 pt-3">
         <h2 class="text-4xl font-black mb-3 pb-3 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-          Tabungan-Ku
+          Login Bos 
         </h2>
       </div>
 
