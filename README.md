@@ -73,7 +73,7 @@ Aplikasi manajemen tabungan dengan fitur deteksi uang menggunakan kamera (AI-pow
 ### 1. Clone Repository
 ```bash
 git clone <repository-url>
-cd tabungan-ku
+cd TabunganKu
 ```
 
 ### 2. Setup Backend
@@ -99,7 +99,7 @@ pip install fastapi sqlalchemy pymysql uvicorn python-dotenv
 ### 3. Setup Frontend
 
 ```bash
-cd tabungan-ku
+cd TabunganKu
 
 # Install dependencies
 npm install
@@ -112,14 +112,14 @@ npm run dev
 
 ### Terminal 1: Backend (FastAPI)
 ```bash
-# Di root folder (tabungan-ku/)
+# Di root folder (TabunganKu/)
 .\venv\Scripts\Activate.ps1
 uvicorn main:app --reload --host 127.0.0.1 --port 8000
 ```
 
 ### Terminal 2: Frontend (Vite)
 ```bash
-# Di folder tabungan-ku/tabungan-ku/
+# Di folder TabunganKu/tabungan-ku/
 npm run dev
 ```
 
@@ -131,25 +131,26 @@ Aplikasi akan berjalan di:
 ## 📁 Struktur Database
 
 ### Tabel: `users`
-| Field    | Type    | Description        |
+| Field    | Type    | Description       |
 |----------|---------|-------------------|
 | id       | INT     | Primary key       |
 | username | VARCHAR | Username login    |
 | password | VARCHAR | Password login    |
 
 ### Tabel: `saving_plans`
-| Field         | Type    | Description                    |
+| Field         | Type    | Description                   |
 |---------------|---------|-------------------------------|
 | id            | INT     | Primary key                   |
 | user_id       | INT     | Foreign key ke users          |
 | name          | VARCHAR | Nama tabungan                 |
 | target_amount | FLOAT   | Target nominal                |
-| currency      | VARCHAR | Mata uang (IDR/USD)          |
+| currency      | VARCHAR | Mata uang (IDR/USD)           |
 | status        | VARCHAR | active/broken                 |
+| broken_at     | DATETIME| Waktu dibongkar               |
 | created_at    | DATETIME| Waktu dibuat                  |
 
 ### Tabel: `saving_logs`
-| Field      | Type    | Description                    |
+| Field      | Type    | Description                   |
 |------------|---------|-------------------------------|
 | id         | INT     | Primary key                   |
 | plan_id    | INT     | Foreign key ke saving_plans   |
