@@ -246,32 +246,7 @@ app.add_middleware(
 # Atau matikan aplikasi yang menggunakan port tersebut
 ```
 
-## 📝 Catatan Pengembangan
-
-### Untuk Fitur AI Detection (Future)
-1. Install TensorFlow.js atau YOLO.js
-2. Training model untuk deteksi uang kertas Indonesia
-3. Implementasi real-time camera feed
-4. Preprocessing gambar untuk meningkatkan akurasi
-5. Multi-object detection untuk menghitung beberapa lembar sekaligus
-
-### Untuk Notifikasi yang Lebih Baik
-1. Install package seperti `vue-toastification`
-2. Replace semua `alert()` dengan toast notifications
-3. Tambahkan success/error states dengan warna berbeda
-
-### Untuk Keamanan
-1. Implement proper authentication (JWT)
-2. Hash password menggunakan bcrypt
-3. Validasi input di backend
-4. Rate limiting untuk API
-5. HTTPS untuk production
-
 ## 👨‍💻 Developer
 
 Tugas Besar - Pengantar AI
-Tahun Ajaran 2025
-
-## 📄 License
-
-MIT License
+Tahun Ajaran 2025/2026
