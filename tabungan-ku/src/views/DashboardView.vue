@@ -480,7 +480,7 @@
           <!-- Action Buttons -->
           <div v-if="selectedPlan?.status === 'active'" class="grid grid-cols-2 gap-3 md:gap-5 pt-2 md:pt-3">
             <button 
-              @click="showCameraModal = true" 
+              @click="openCameraModal" 
               class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white py-3 md:py-5 rounded-xl md:rounded-2xl text-sm md:text-base font-bold hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 md:gap-3"
             >
               <svg class="w-5 h-5 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -676,8 +676,25 @@
               <svg class="w-4 h-4 md:w-5 md:h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
               </svg>
-              Atau masukkan nominal manual:
+              Masukkan nominal Rupiah:
             </label>
+            
+            <!-- Exchange Rate Info (only show when currency is USD) -->
+            <div v-if="selectedPlan?.currency === 'USD ($)'" class="mb-4 p-3 bg-gradient-to-r from-yellow-50 to-amber-50 rounded-xl border border-yellow-200">
+              <div class="flex items-center gap-2 mb-1">
+                <svg class="w-4 h-4 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span class="text-xs font-bold text-yellow-800">Konversi Otomatis ke USD</span>
+              </div>
+              <p v-if="exchangeRate" class="text-xs text-yellow-700">
+                Kurs: <span class="font-black">1 USD = Rp {{ formatNumber(Math.round(1/exchangeRate)) }}</span>
+              </p>
+              <p v-else class="text-xs text-yellow-600">
+                <span class="animate-pulse">Memuat kurs...</span>
+              </p>
+            </div>
+            
             <div class="space-y-4">
               <input 
                 v-model.number="manualAmount" 
@@ -938,10 +955,14 @@
           <p class="text-gray-600 font-semibold text-lg">
             {{ successData.currency }} {{ formatNumber(successData.amount) }}
           </p>
+          <!-- Show conversion info if currency is USD -->
+          <p v-if="successData.originalIDR" class="text-gray-500 text-sm mt-2">
+            (Dari Rp {{ formatNumber(successData.originalIDR) }})
+          </p>
         </div>
         
         <div class="space-y-4 mb-8" style="margin-top:10px;">
-          <div class="bg-gradient-to-br from-blue-50 to-indigo-50 p-5 rounded-2xl border-2 border-blue-200">
+          <div v-if="successData.banknoteCount > 0" class="bg-gradient-to-br from-blue-50 to-indigo-50 p-5 rounded-2xl border-2 border-blue-200">
             <div class="flex items-center justify-between mb-3">
               <span class="text-sm font-bold text-gray-600 flex items-center gap-2">
                 <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1114,7 +1135,8 @@ const successData = ref({
   currency: '',
   banknoteCount: 0,
   totalSaved: 0,
-  remaining: 0
+  remaining: 0,
+  originalIDR: null // Store original IDR amount when converted to USD
 })
 const notificationData = ref({
   type: 'success', // 'success', 'error', 'warning', 'info'
@@ -1173,6 +1195,12 @@ const cameraLoading = ref(false)
 const cameraError = ref('')
 const detecting = ref(false)
 const detectionResult = ref(null)
+
+// Exchange Rate State
+const exchangeRate = ref(null) // IDR to USD rate
+const exchangeRateLoading = ref(false)
+const exchangeRateError = ref(null)
+const lastFetchTime = ref(null)
 
 // ==================== COMPUTED PROPERTIES ====================
 
@@ -1381,9 +1409,28 @@ const handleSaveMoney = async () => {
   }
 
   try {
+    let amountToSave = manualAmount.value
+    const originalIDR = manualAmount.value
+    
+    // Check if currency is USD and we're inputting IDR - need to convert
+    if (selectedPlan.value.currency === 'USD ($)') {
+      // Fetch latest exchange rate
+      const rate = await fetchExchangeRate()
+      
+      // Convert IDR to USD
+      amountToSave = convertIDRtoUSD(manualAmount.value)
+      
+      console.log(`Converting Rp ${formatNumber(originalIDR)} to $${amountToSave.toFixed(2)} (rate: ${rate})`)
+      
+      // Show conversion info
+      showNotification('info', 'Konversi Mata Uang', 
+        `Rp ${formatNumber(originalIDR)} = $${amountToSave.toFixed(2)}`,
+        `Kurs: 1 USD = Rp ${formatNumber(Math.round(1/rate))}`)
+    }
+    
     const response = await axios.post(
       `${API_BASE_URL}/plans/${selectedPlan.value.id}/save`, 
-      { amount: manualAmount.value }
+      { amount: amountToSave }
     )
     
     showCameraModal.value = false
@@ -1391,11 +1438,12 @@ const handleSaveMoney = async () => {
     // Show success notification
     const currency = selectedPlan.value.currency === 'IDR (Rp)' ? 'Rp' : '$'
     successData.value = {
-      amount: manualAmount.value,
+      amount: amountToSave,
       currency: currency,
       banknoteCount: 0,
       totalSaved: response.data.total_saved,
-      remaining: response.data.remaining
+      remaining: response.data.remaining,
+      originalIDR: selectedPlan.value.currency === 'USD ($)' ? originalIDR : null
     }
     showSuccessModal.value = true
     
@@ -1408,6 +1456,55 @@ const handleSaveMoney = async () => {
     console.error('Error saving money:', error)
     showNotification('error', 'Gagal Menyimpan', 'Terjadi kesalahan saat menyimpan uang')
   }
+}
+
+// ==================== EXCHANGE RATE FUNCTIONS ====================
+
+// Fetch real-time exchange rate from API
+const fetchExchangeRate = async () => {
+  // Check if we need to fetch (cache for 1 hour)
+  const now = Date.now()
+  if (exchangeRate.value && lastFetchTime.value && (now - lastFetchTime.value < 3600000)) {
+    return exchangeRate.value
+  }
+
+  exchangeRateLoading.value = true
+  exchangeRateError.value = null
+
+  try {
+    // Using exchangerate-api.com - free tier
+    const response = await axios.get('https://api.exchangerate-api.com/v4/latest/IDR')
+    
+    if (response.data && response.data.rates && response.data.rates.USD) {
+      exchangeRate.value = response.data.rates.USD
+      lastFetchTime.value = now
+      return exchangeRate.value
+    } else {
+      throw new Error('Invalid API response')
+    }
+  } catch (error) {
+    console.error('Error fetching exchange rate:', error)
+    exchangeRateError.value = error.message
+    
+    // Fallback to approximate rate if API fails
+    exchangeRate.value = 0.000063 // Approx 1 USD = 15,873 IDR
+    showNotification('warning', 'Kurs Tidak Dapat Diperbarui', 
+      'Menggunakan kurs estimasi: 1 USD ≈ Rp 15,873',
+      'Koneksi ke server kurs gagal. Kurs yang digunakan adalah estimasi.')
+    
+    return exchangeRate.value
+  } finally {
+    exchangeRateLoading.value = false
+  }
+}
+
+// Convert IDR to USD
+const convertIDRtoUSD = (idrAmount) => {
+  if (!exchangeRate.value) {
+    console.warn('Exchange rate not available')
+    return idrAmount * 0.000063 // Fallback rate
+  }
+  return idrAmount * exchangeRate.value
 }
 
 // ==================== CAMERA AI DETECTION FUNCTIONS ====================
@@ -1479,6 +1576,16 @@ const closeCameraModal = () => {
   showCameraModal.value = false
   manualAmount.value = 0
   cameraError.value = ''
+}
+
+// Open camera modal and prepare exchange rate
+const openCameraModal = async () => {
+  showCameraModal.value = true
+  
+  // If currency is USD, fetch exchange rate in advance
+  if (selectedPlan.value?.currency === 'USD ($)') {
+    await fetchExchangeRate()
+  }
 }
 
 // Capture frame and send to detection API
@@ -1556,8 +1663,25 @@ const confirmDetection = async () => {
   }
   
   try {
-    const totalAmount = detectionResult.value.total
-    const banknoteCount = detectionResult.value.banknotes.length // Simpan dulu sebelum di-reset
+    let totalAmount = detectionResult.value.total // Amount detected in IDR
+    const banknoteCount = detectionResult.value.banknotes.length
+    const originalIDR = totalAmount // Store original IDR amount
+    
+    // Check if currency is USD - need to convert
+    if (selectedPlan.value.currency === 'USD ($)') {
+      // Fetch latest exchange rate
+      const rate = await fetchExchangeRate()
+      
+      // Convert IDR to USD
+      totalAmount = convertIDRtoUSD(totalAmount)
+      
+      console.log(`Converting Rp ${formatNumber(originalIDR)} to $${totalAmount.toFixed(2)} (rate: ${rate})`)
+      
+      // Show conversion info
+      showNotification('info', 'Konversi Mata Uang', 
+        `Rp ${formatNumber(originalIDR)} = $${totalAmount.toFixed(2)}`,
+        `Kurs: 1 USD = Rp ${formatNumber(Math.round(1/rate))}`)
+    }
     
     const response = await axios.post(
       `${API_BASE_URL}/plans/${selectedPlan.value.id}/save`, 
@@ -1575,7 +1699,8 @@ const confirmDetection = async () => {
       currency: currency,
       banknoteCount: banknoteCount,
       totalSaved: response.data.total_saved,
-      remaining: response.data.remaining
+      remaining: response.data.remaining,
+      originalIDR: selectedPlan.value.currency === 'USD ($)' ? originalIDR : null
     }
     showSuccessModal.value = true
     
