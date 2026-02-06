@@ -1,67 +1,109 @@
 <template>
   <div class="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-indigo-50 flex flex-col">
     <!-- ==================== NAVIGATION TABS ==================== -->
-    <nav class="bg-white/80 backdrop-blur-xl shadow-lg border-b border-purple-100 p-5 flex justify-between items-center sticky top-0 z-10">
-      <!-- Logo/Brand -->
-      <div class="flex items-center gap-3">
-        <h1 class="text-2xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-          TabunganKu
-        </h1>
+    <nav class="bg-white/80 backdrop-blur-xl shadow-lg border-b border-purple-100 p-4 md:p-5 sticky top-0 z-10">
+      <!-- Mobile Layout -->
+      <div class="flex md:hidden items-center justify-between gap-3">
+        <!-- Center: Tab Buttons -->
+        <div class="flex-1 flex justify-center gap-3">
+          <button 
+            @click="currentTab = 'tabungan'"
+            :disabled="currentTab === 'tabungan'"
+            :class="currentTab === 'tabungan' 
+              ? 'bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white shadow-lg' 
+              : 'bg-white text-gray-600 hover:bg-gray-50 border-2 border-gray-200'"
+            class="px-5 py-3 rounded-2xl text-sm font-bold transition-all duration-300"
+          >
+            💰 Tabungan
+          </button>
+          <button 
+            @click="currentTab = 'riwayat'"
+            :disabled="currentTab === 'riwayat'"
+            :class="currentTab === 'riwayat' 
+              ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white shadow-lg' 
+              : 'bg-white text-gray-600 hover:bg-gray-50 border-2 border-gray-200'"
+            class="px-5 py-3 rounded-2xl text-sm font-bold transition-all duration-300"
+          >
+            📦 Riwayat
+          </button>
+        </div>
+        
+        <!-- Right: Logout Icon Only -->
+        <button 
+          @click="handleLogout" 
+          class="bg-gradient-to-r from-red-500 to-pink-500 text-white p-3 rounded-2xl font-bold hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center justify-center flex-shrink-0"
+          title="Logout"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+          </svg>
+        </button>
       </div>
 
-      <!-- Tab Buttons -->
-      <div class="flex gap-4">
+      <!-- Desktop Layout -->
+      <div class="hidden md:flex justify-between items-center">
+        <!-- Logo/Brand -->
+        <div class="flex items-center gap-3">
+          <h1 class="text-2xl font-black bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+            TabunganKu
+          </h1>
+        </div>
+
+        <!-- Tab Buttons -->
+        <div class="flex gap-4">
+          <button 
+            @click="currentTab = 'tabungan'"
+            :disabled="currentTab === 'tabungan'"
+            :class="currentTab === 'tabungan' 
+              ? 'bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white shadow-lg scale-105' 
+              : 'bg-white text-gray-600 hover:bg-gray-50 border-2 border-gray-200'"
+            class="px-10 py-3.5 rounded-2xl text-base font-bold transition-all duration-300 transform hover:scale-105"
+          >
+            💰 Tabungan
+          </button>
+          <button 
+            @click="currentTab = 'riwayat'"
+            :disabled="currentTab === 'riwayat'"
+            :class="currentTab === 'riwayat' 
+              ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white shadow-lg scale-105' 
+              : 'bg-white text-gray-600 hover:bg-gray-50 border-2 border-gray-200'"
+            class="px-10 py-3.5 rounded-2xl text-base font-bold transition-all duration-300 transform hover:scale-105"
+          >
+            📦 Riwayat Bongkar
+          </button>
+        </div>
+
+        <!-- Logout Button -->
         <button 
-          @click="currentTab = 'tabungan'"
-          :disabled="currentTab === 'tabungan'"
-          :class="currentTab === 'tabungan' 
-            ? 'bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white shadow-lg scale-105' 
-            : 'bg-white text-gray-600 hover:bg-gray-50 border-2 border-gray-200'"
-          class="px-10 py-3.5 rounded-2xl font-bold transition-all duration-300 transform hover:scale-105"
+          @click="handleLogout" 
+          class="bg-gradient-to-r from-red-500 to-pink-500 text-white px-6 py-3 rounded-2xl text-base font-bold hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2"
         >
-          💰 Tabungan
-        </button>
-        <button 
-          @click="currentTab = 'riwayat'"
-          :disabled="currentTab === 'riwayat'"
-          :class="currentTab === 'riwayat' 
-            ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white shadow-lg scale-105' 
-            : 'bg-white text-gray-600 hover:bg-gray-50 border-2 border-gray-200'"
-          class="px-10 py-3.5 rounded-2xl font-bold transition-all duration-300 transform hover:scale-105"
-        >
-          📦 Riwayat Bongkar
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+          </svg>
+          Logout
         </button>
       </div>
-
-      <!-- Logout Button -->
-      <button 
-        @click="handleLogout" 
-        class="bg-gradient-to-r from-red-500 to-pink-500 text-white px-6 py-3 rounded-2xl font-bold hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-2"
-      >
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-        </svg>
-        Logout
-      </button>
     </nav>
 
     <!-- ==================== MAIN CONTENT ==================== -->
-    <main class="p-8 max-w-7xl mx-auto w-full">
+    <main class="p-4 md:p-8 w-full flex justify-center">
+      <div class="w-full max-w-7xl">
       
       <!-- ========== TAB: TABUNGAN AKTIF ========== -->
       <div v-if="currentTab === 'tabungan'">
-        <div class="flex justify-between items-center mb-10">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-10 gap-4">
           <div>
-            <h2 class="pb-2 text-4xl font-black bg-linear-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+            <h2 class="pb-2 text-2xl md:text-4xl font-black bg-linear-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
               Daftar Tabungan Aktif
             </h2>
-            <p class="text-gray-500 mt-2 font-medium">Kelola dan pantau progres tabunganmu</p>
+            <p class="text-sm md:text-base text-gray-500 mt-2 font-medium">Kelola dan pantau progres tabunganmu</p>
           </div>
           <button 
             @click="showCreateModal = true" 
-            class="bg-linear-to-r from-indigo-600 via-purple-600 to-pink-600 text-white px-8 py-4 rounded-2xl font-bold hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-3"
+            class="w-full md:w-auto bg-linear-to-r from-indigo-600 via-purple-600 to-pink-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-2xl text-sm md:text-base font-bold hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3"
           >
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
             </svg>
             Buat Tabungan
@@ -77,24 +119,24 @@
         </div>
 
         <!-- Savings List -->
-        <div v-else class="grid gap-8">
+        <div v-else class="grid gap-4 md:gap-8">
           <div 
             v-for="plan in paginatedActivePlans" 
             :key="plan.id" 
-            class="bg-white/80 backdrop-blur-xl p-8 rounded-3xl shadow-lg border-2 border-purple-100 hover:shadow-2xl hover:border-purple-300 hover:scale-[1.01] transition-all duration-300 group relative"
+            class="bg-white/80 backdrop-blur-xl p-4 md:p-8 rounded-3xl shadow-lg border-2 border-purple-100 hover:shadow-2xl hover:border-purple-300 hover:scale-[1.01] transition-all duration-300 group relative"
           >
-            <div class="flex justify-between items-start gap-6">
-              <div class="flex items-start gap-5 flex-1">
-                <div class="w-16 h-16 bg-linear-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-2xl flex items-center justify-center text-white font-bold text-3xl shadow-lg group-hover:scale-110 transition-transform">
+            <div class="flex flex-col md:flex-row justify-between items-start gap-4 md:gap-6">
+              <div class="flex items-start gap-3 md:gap-5 flex-1 min-w-0">
+                <div class="w-12 h-12 md:w-16 md:h-16 bg-linear-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-2xl flex items-center justify-center text-white font-bold text-2xl md:text-3xl shadow-lg group-hover:scale-110 transition-transform flex-shrink-0">
                   💰
                 </div>
-                <div class="flex-1">
-                  <h3 class="font-black text-2xl text-gray-800 mb-2">{{ plan.name }}</h3>
-                  <div v-if="plan.target_date" class="inline-flex items-center gap-2 bg-gradient-to-r from-orange-50 to-pink-50 px-3 py-1.5 rounded-full mb-3 border border-orange-200">
-                    <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="flex-1 min-w-0 overflow-hidden">
+                  <h3 class="font-black text-lg md:text-2xl text-gray-800 mb-2 truncate" style="max-width: 100%;">{{ plan.name }}</h3>
+                  <div v-if="plan.target_date" class="inline-flex items-center gap-2 bg-gradient-to-r from-orange-50 to-pink-50 px-2 md:px-3 py-1 md:py-1.5 rounded-full mb-3 border border-orange-200">
+                    <svg class="w-3 h-3 md:w-4 md:h-4 text-orange-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
-                    <span class="text-xs font-bold text-orange-700">{{ calculateRemainingDays(plan.target_date) }}</span>
+                    <span class="text-[10px] md:text-xs font-bold text-orange-700">{{ calculateRemainingDays(plan.target_date) }}</span>
                   </div>
                   <!-- <div class="grid grid-cols-2 gap-3 mb-5">
                     <div class="bg-gradient-to-br from-indigo-50 to-purple-50 p-3 rounded-xl border border-indigo-100">
@@ -110,14 +152,14 @@
                   <!-- Progress Bar with Percentage -->
                   <div class="space-y-2">
                     <div class="flex justify-between items-center">
-                      <span class="text-xs font-bold text-gray-600">Progress Tercapai</span>
-                      <span class="text-base font-black bg-linear-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                      <span class="text-[10px] md:text-xs font-bold text-gray-600">Progress Tercapai</span>
+                      <span class="text-sm md:text-base font-black bg-linear-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
                         {{ Math.round((plan.total_saved || 0) / plan.target_amount * 100) }}%
                       </span>
                     </div>
-                    <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden shadow-inner">
+                    <div class="w-full bg-gray-200 rounded-full h-3 md:h-4 overflow-hidden shadow-inner">
                       <div 
-                        class="bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 h-4 rounded-full transition-all duration-500 shadow-lg"
+                        class="bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 h-3 md:h-4 rounded-full transition-all duration-500 shadow-lg"
                         :style="{width: Math.min((plan.total_saved || 0) / plan.target_amount * 100, 100) + '%'}"
                       >
                       </div>
@@ -125,55 +167,54 @@
                   </div>
                 </div>
               </div>
-              <div class="flex flex-col gap-3 flex-shrink-0">
+              <!-- Action Buttons -->
+              <div class="flex gap-2 md:gap-3 w-full md:w-auto pt-0 md:pt-4">
                 <button 
                   @click="openDetail(plan)" 
-                  class="bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-600 px-6 py-3 rounded-2xl font-bold hover:shadow-lg hover:scale-105 transition-all duration-300 border-2 border-emerald-200"
+                  class="flex-1 md:flex-none bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-600 px-5 md:px-6 py-2 md:py-3 rounded-xl md:rounded-2xl text-sm md:text-base font-bold hover:shadow-lg hover:scale-105 transition-all duration-300 border-2 border-emerald-200"
                 >
                   Buka
                 </button>
-                <div class="flex gap-2">
-                  <button 
-                    @click="editPlan(plan)" 
-                    class="flex-1 bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-600 p-3 rounded-2xl font-bold hover:shadow-lg hover:scale-105 transition-all duration-300 border-2 border-blue-200 flex items-center justify-center gap-2"
-                    title="Edit Tabungan"
-                  >
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                    </svg>
-                    Edit
-                  </button>
-                  <button 
-                    @click="confirmDelete(plan)" 
-                    class="flex-1 bg-gradient-to-r from-red-50 to-pink-50 text-red-600 p-3 rounded-2xl font-bold hover:shadow-lg hover:scale-105 transition-all duration-300 border-2 border-red-200 flex items-center justify-center gap-2"
-                    title="Hapus Tabungan"
-                  >
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                    </svg>
-                    Hapus
-                  </button>
-                </div>
+                <button 
+                  @click="editPlan(plan)" 
+                  class="flex-none bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-600 p-2 md:p-3 rounded-xl md:rounded-2xl font-bold hover:shadow-lg hover:scale-105 transition-all duration-300 border-2 border-blue-200 flex items-center justify-center"
+                  title="Edit Tabungan"
+                >
+                  <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                  </svg>
+                  <span class="hidden md:inline ml-1">Edit</span>
+                </button>
+                <button 
+                  @click="confirmDelete(plan)" 
+                  class="flex-none bg-gradient-to-r from-red-50 to-pink-50 text-red-600 p-2 md:p-3 rounded-xl md:rounded-2xl font-bold hover:shadow-lg hover:scale-105 transition-all duration-300 border-2 border-red-200 flex items-center justify-center"
+                  title="Hapus Tabungan"
+                >
+                  <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                  </svg>
+                  <span class="hidden md:inline ml-1">Hapus</span>
+                </button>
               </div>
           </div>
         </div>
 
         <!-- Pagination -->
-        <div v-if="totalPages > 1" class="mt-10 flex justify-center items-center gap-3">
+        <div v-if="totalPages > 1" class="mt-6 md:mt-10 flex justify-center items-center gap-2 md:gap-3 flex-wrap">
           <button 
             @click="currentPage--" 
             :disabled="currentPage === 1" 
-            class="px-6 py-3 border-2 rounded-2xl font-bold transition-all duration-300"
+            class="px-4 md:px-6 py-2 md:py-3 border-2 rounded-2xl text-sm md:text-base font-bold transition-all duration-300"
             :class="currentPage === 1 ? 'border-gray-200 text-gray-300 cursor-not-allowed' : 'border-purple-200 text-gray-700 hover:bg-purple-50'"
           >
-            ← Previous
+            ← <span class="hidden md:inline">Previous</span>
           </button>
-          <div class="flex gap-2">
+          <div class="flex gap-1 md:gap-2">
             <button 
               v-for="page in totalPages" 
               :key="page" 
               @click="currentPage = page" 
-              class="px-5 py-3 rounded-2xl font-bold transition-all duration-300"
+              class="px-3 md:px-5 py-2 md:py-3 rounded-2xl text-sm md:text-base font-bold transition-all duration-300"
               :class="page === currentPage 
                 ? 'bg-linear-to-r from-indigo-600 via-purple-600 to-pink-600 text-white shadow-lg' 
                 : 'border-2 border-gray-200 text-gray-700 hover:bg-gray-50'"
@@ -184,10 +225,10 @@
           <button 
             @click="currentPage++" 
             :disabled="currentPage === totalPages" 
-            class="px-6 py-3 border-2 rounded-2xl font-bold transition-all duration-300"
+            class="px-4 md:px-6 py-2 md:py-3 border-2 rounded-2xl text-sm md:text-base font-bold transition-all duration-300"
             :class="currentPage === totalPages ? 'border-gray-200 text-gray-300 cursor-not-allowed' : 'border-purple-200 text-gray-700 hover:bg-purple-50'"
           >
-            Next →
+            <span class="hidden md:inline">Next</span> →
           </button>
         </div>
       </div>
@@ -195,11 +236,11 @@
 
       <!-- ========== TAB: RIWAYAT BONGKAR ========== -->
       <div v-else-if="currentTab === 'riwayat'">
-        <div class="mb-10">
-          <h2 class="text-4xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent pb-2">
+        <div class="mb-6 md:mb-10">
+          <h2 class="text-2xl md:text-4xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent pb-2">
             Riwayat Tabungan Dibongkar
           </h2>
-          <p class="text-gray-500 mt-2 font-medium">Tabungan yang sudah selesai dibongkar</p>
+          <p class="text-sm md:text-base text-gray-500 mt-2 font-medium">Tabungan yang sudah selesai dibongkar</p>
         </div>
         <br>
         <!-- Empty State -->
@@ -210,47 +251,47 @@
         </div>
 
         <!-- Broken Savings List -->
-        <div v-else class="grid gap-8">
+        <div v-else class="grid gap-4 md:gap-8">
           <div 
             v-for="plan in paginatedBrokenPlans" 
             :key="plan.id" 
-            class="bg-white/80 backdrop-blur-xl p-8 rounded-3xl shadow-lg border-2 border-emerald-100 hover:shadow-2xl hover:border-emerald-300 hover:scale-[1.01] transition-all duration-300 group relative"
+            class="bg-white/80 backdrop-blur-xl p-4 md:p-8 rounded-3xl shadow-lg border-2 border-emerald-100 hover:shadow-2xl hover:border-emerald-300 hover:scale-[1.01] transition-all duration-300 group relative"
           >
-            <div class="flex justify-between items-start gap-6">
-              <div class="flex items-start gap-5 flex-1">
-                <div class="w-16 h-16 bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 rounded-2xl flex items-center justify-center text-white font-bold text-3xl shadow-lg group-hover:scale-110 transition-transform">
+            <div class="flex flex-col md:flex-row justify-between items-start gap-4 md:gap-6">
+              <div class="flex items-start gap-3 md:gap-5 flex-1 min-w-0">
+                <div class="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 rounded-2xl flex items-center justify-center text-white font-bold text-2xl md:text-3xl shadow-lg group-hover:scale-110 transition-transform flex-shrink-0">
                   📦
                 </div>
-                <div class="flex-1">
-                  <h3 class="pb-3 font-black text-2xl text-gray-800 mb-2">{{ plan.name }}</h3>
-                  <div class="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-50 to-teal-50 px-4 py-2 rounded-full border border-emerald-200">
-                    <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="flex-1 min-w-0 overflow-hidden">
+                  <h3 class="pb-2 md:pb-3 font-black text-lg md:text-2xl text-gray-800 mb-2 truncate" style="max-width: 100%;">{{ plan.name }}</h3>
+                  <div class="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-50 to-teal-50 px-3 md:px-4 py-1.5 md:py-2 rounded-full border border-emerald-200">
+                    <svg class="w-3 h-3 md:w-4 md:h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
                     <div class="flex flex-col">
-                      <span class="text-xs font-bold text-emerald-700">Selesai Dibongkar</span>
-                      <span class="text-[10px] text-emerald-600 mt-0.5">{{ formatDate(plan.broken_at || plan.created_at) }}</span>
+                      <span class="text-[10px] md:text-xs font-bold text-emerald-700">Selesai Dibongkar</span>
+                      <span class="text-[9px] md:text-[10px] text-emerald-600 mt-0.5">{{ formatDate(plan.broken_at || plan.created_at) }}</span>
                     </div>
                   </div>
                 </div>
               </div>
 
               <!-- Action Buttons -->
-              <div class="flex gap-3 pt-4">
+              <div class="flex gap-2 md:gap-3 w-full md:w-auto pt-0 md:pt-4">
                 <button 
                   @click="openDetail(plan)"
-                  class="px-6 py-3 bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-600 rounded-2xl font-bold hover:shadow-lg hover:scale-105 transition-all duration-300 border-2 border-emerald-200"
+                  class="flex-1 md:flex-none px-4 md:px-6 py-2 md:py-3 bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-600 rounded-2xl text-sm md:text-base font-bold hover:shadow-lg hover:scale-105 transition-all duration-300 border-2 border-emerald-200"
                 >
                   Buka
                 </button>
                 <button 
                   @click="confirmDelete(plan)"
-                  class="px-6 py-3 bg-gradient-to-r from-red-50 to-pink-50 text-red-600 rounded-2xl font-bold hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-2 border-2 border-red-200"
+                  class="flex-1 md:flex-none px-4 md:px-6 py-2 md:py-3 bg-gradient-to-r from-red-50 to-pink-50 text-red-600 rounded-2xl text-sm md:text-base font-bold hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center justify-center gap-1 md:gap-2 border-2 border-red-200"
                 >
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                   </svg>
-                  Hapus
+                  <span class="hidden md:inline">Hapus</span>
                 </button>
               </div>
             </div>
@@ -258,21 +299,21 @@
         </div>
 
         <!-- Pagination -->
-        <div v-if="totalBrokenPages > 1" class="flex justify-center items-center gap-4 mt-12">
+        <div v-if="totalBrokenPages > 1" class="flex justify-center items-center gap-2 md:gap-4 mt-8 md:mt-12 flex-wrap">
           <button 
             @click="currentBrokenPage--" 
             :disabled="currentBrokenPage === 1" 
-            class="px-6 py-3 border-2 rounded-2xl font-bold transition-all duration-300"
+            class="px-4 md:px-6 py-2 md:py-3 border-2 rounded-2xl text-sm md:text-base font-bold transition-all duration-300"
             :class="currentBrokenPage === 1 ? 'border-gray-200 text-gray-300 cursor-not-allowed' : 'border-emerald-200 text-gray-700 hover:bg-emerald-50'"
           >
-            ← Prev
+            ← <span class="hidden md:inline">Prev</span>
           </button>
-          <div class="flex gap-2">
+          <div class="flex gap-1 md:gap-2">
             <button 
               v-for="page in totalBrokenPages" 
               :key="page" 
               @click="currentBrokenPage = page" 
-              class="px-5 py-3 rounded-2xl font-bold transition-all duration-300"
+              class="px-3 md:px-5 py-2 md:py-3 rounded-2xl text-sm md:text-base font-bold transition-all duration-300"
               :class="page === currentBrokenPage 
                 ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white shadow-lg' 
                 : 'border-2 border-gray-200 text-gray-700 hover:bg-gray-50'"
@@ -283,14 +324,15 @@
           <button 
             @click="currentBrokenPage++" 
             :disabled="currentBrokenPage === totalBrokenPages" 
-            class="px-6 py-3 border-2 rounded-2xl font-bold transition-all duration-300"
+            class="px-4 md:px-6 py-2 md:py-3 border-2 rounded-2xl text-sm md:text-base font-bold transition-all duration-300"
             :class="currentBrokenPage === totalBrokenPages ? 'border-gray-200 text-gray-300 cursor-not-allowed' : 'border-emerald-200 text-gray-700 hover:bg-emerald-50'"
           >
-            Next →
+            <span class="hidden md:inline">Next</span> →
           </button>
         </div>
       </div>
 
+      </div>
     </main>
 
     <!-- ==================== MODAL: CREATE SAVING ==================== -->
@@ -401,32 +443,32 @@
               {{ selectedPlan?.currency === 'IDR (Rp)' ? 'Rp' : '$' }} {{ formatNumber(planDetail.total_saved) }}
             </h2>
             <br>
-            <div class="grid grid-cols-2 gap-4 mb-6">
-              <div class="bg-white/70 backdrop-blur-sm p-4 rounded-2xl">
-                <span class="text-xs text-gray-500 font-semibold block mb-1">Target</span>
-                <span class="font-black text-lg text-gray-800 block">
+            <div class="grid grid-cols-2 gap-2 md:gap-4 mb-4 md:mb-6">
+              <div class="bg-white/70 backdrop-blur-sm p-2 md:p-4 rounded-xl md:rounded-2xl">
+                <span class="text-[10px] md:text-xs text-gray-500 font-semibold block mb-0.5 md:mb-1">Target</span>
+                <span class="font-black text-xs md:text-lg text-gray-800 block leading-tight">
                   {{ selectedPlan?.currency === 'IDR (Rp)' ? 'Rp' : '$' }} {{ formatNumber(selectedPlan?.target_amount || 0) }}
                 </span>
               </div>
-              <div class="bg-white/70 backdrop-blur-sm p-4 rounded-2xl">
-                <span class="text-xs text-gray-500 font-semibold block mb-1">Sisa</span>
-                <span class="font-black text-lg text-orange-600 block">
+              <div class="bg-white/70 backdrop-blur-sm p-2 md:p-4 rounded-xl md:rounded-2xl">
+                <span class="text-[10px] md:text-xs text-gray-500 font-semibold block mb-0.5 md:mb-1">Sisa</span>
+                <span class="font-black text-xs md:text-lg text-orange-600 block leading-tight">
                   {{ selectedPlan?.currency === 'IDR (Rp)' ? 'Rp' : '$' }} {{ formatNumber(planDetail.remaining) }}
                 </span>
               </div>
             </div>
 
             <!-- Progress Bar with Percentage -->
-            <div class="space-y-3v pt-3">
+            <div class="space-y-2 md:space-y-3 pt-2 md:pt-3">
               <div class="flex justify-between items-center">
-                <span class="text-sm font-bold text-gray-600">Progress Tercapai</span>
-                <span class="text-2xl font-black bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                <span class="text-xs md:text-sm font-bold text-gray-600">Progress Tercapai</span>
+                <span class="text-lg md:text-2xl font-black bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                   {{ Math.round(planDetail.progress_percentage) }}%
                 </span>
               </div>
-              <div class="w-full bg-white/50 rounded-full h-5 overflow-hidden shadow-inner">
+              <div class="w-full bg-white/50 rounded-full h-3 md:h-5 overflow-hidden shadow-inner">
                 <div 
-                  class="bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 h-5 rounded-full transition-all duration-500 shadow-lg relative overflow-hidden"
+                  class="bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 h-3 md:h-5 rounded-full transition-all duration-500 shadow-lg relative overflow-hidden"
                   :style="{width: Math.min(planDetail.progress_percentage, 100) + '%'}"
                 >
                   <div class="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent"></div>
@@ -436,12 +478,12 @@
           </div>
 
           <!-- Action Buttons -->
-          <div v-if="selectedPlan?.status === 'active'" class="grid grid-cols-2 gap-5 pt-3">
+          <div v-if="selectedPlan?.status === 'active'" class="grid grid-cols-2 gap-3 md:gap-5 pt-2 md:pt-3">
             <button 
               @click="showCameraModal = true" 
-              class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white py-5 rounded-2xl font-bold hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3"
+              class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white py-3 md:py-5 rounded-xl md:rounded-2xl text-sm md:text-base font-bold hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 md:gap-3"
             >
-              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
               </svg>
@@ -449,9 +491,9 @@
             </button>
             <button 
               @click="handleBongkar" 
-              class="bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-white py-5 rounded-2xl font-bold hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3"
+              class="bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-white py-3 md:py-5 rounded-xl md:rounded-2xl text-sm md:text-base font-bold hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 md:gap-3"
             >
-              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
               <span>Bongkar</span>
@@ -459,35 +501,35 @@
           </div>
 
           <!-- Transaction History -->
-          <div class="pt-3">
-            <h4 class="font-bold text-xl text-gray-800 mb-4 flex items-center gap-2">
-              <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="pt-2 md:pt-3">
+            <h4 class="font-bold text-base md:text-xl text-gray-800 mb-2 md:mb-4 flex items-center gap-2">
+              <svg class="w-5 h-5 md:w-6 md:h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
               Riwayat Menabung
             </h4>
             
             <!-- Empty State -->
-            <div v-if="planDetail.logs.length === 0" class="pt-3 text-center py-12 bg-gray-50 rounded-2xl">
-              <div class="text-5xl mb-3">📝</div>
-              <p class="text-gray-400 font-medium">Belum ada riwayat menabung</p>
+            <div v-if="planDetail.logs.length === 0" class="pt-2 md:pt-3 text-center py-8 md:py-12 bg-gray-50 rounded-xl md:rounded-2xl">
+              <div class="text-4xl md:text-5xl mb-2 md:mb-3">📝</div>
+              <p class="text-sm md:text-base text-gray-400 font-medium">Belum ada riwayat menabung</p>
             </div>
             
             <!-- Transaction List -->
-            <div v-else class="pt-3 space-y-2 max-h-80 overflow-y-auto pr-2" style="scrollbar-width: none; -ms-overflow-style: none;">
+            <div v-else class="pt-2 md:pt-3 space-y-2 max-h-60 md:max-h-80 overflow-y-auto pr-1 md:pr-2" style="scrollbar-width: none; -ms-overflow-style: none;">
               <div 
                 v-for="log in paginatedLogs" 
                 :key="log.id" 
-                class="flex justify-between items-center bg-gradient-to-r from-green-50 to-blue-50 p-4 rounded-xl hover:shadow-md transition border border-green-100"
+                class="flex justify-between items-center bg-gradient-to-r from-green-50 to-blue-50 p-3 md:p-4 rounded-lg md:rounded-xl hover:shadow-md transition border border-green-100"
                 style="margin-top:5px;"
               > 
-                <div class="">
-                  <p class="font-bold text-lg text-green-600">
+                <div>
+                  <p class="font-bold text-sm md:text-lg text-green-600">
                     + {{ selectedPlan?.currency === 'IDR (Rp)' ? 'Rp' : '$' }} {{ formatNumber(log.amount) }}
                   </p>
-                  <p class="text-xs text-gray-500 mt-1">{{ formatDate(log.created_at) }}</p>
+                  <p class="text-[10px] md:text-xs text-gray-500 mt-0.5 md:mt-1">{{ formatDate(log.created_at) }}</p>
                 </div>
-                <div class="text-2xl">💰</div>
+                <div class="text-xl md:text-2xl">💰</div>
               </div>
             </div>
 
@@ -604,13 +646,13 @@
           </div>
           
           <!-- Action Buttons -->
-          <div class="grid grid-cols-2 gap-5 pt-3">
+          <div class="grid grid-cols-2 gap-3 md:gap-5 pt-2 md:pt-3">
             <button 
               @click="captureAndDetect" 
               :disabled="!cameraActive || detecting"
-              class="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white py-5 rounded-2xl font-bold hover:shadow-2xl hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+              class="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white py-3 md:py-5 rounded-xl md:rounded-2xl text-sm md:text-base font-bold hover:shadow-2xl hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 md:gap-3"
             >
-              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
               </svg>
@@ -619,9 +661,9 @@
             <button 
               @click="confirmDetection" 
               :disabled="!detectionResult || detecting"
-              class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white py-5 rounded-2xl font-bold hover:shadow-2xl hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+              class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white py-3 md:py-5 rounded-xl md:rounded-2xl text-sm md:text-base font-bold hover:shadow-2xl hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 md:gap-3"
             >
-              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
               </svg>
               <span>Simpan</span>
@@ -629,26 +671,29 @@
           </div>
           
           <!-- Manual Input Alternative -->
-          <div style="margin-top:10px;" class="pt-3 bg-gradient-to-br from-gray-50 to-blue-50 border-2 border-dashed border-blue-200 rounded-2xl p-6">
-            <label class="block text-sm font-bold text-gray-700 mb-4 flex items-center gap-2">
-              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div style="margin-top:10px;" class="pt-3 bg-gradient-to-br from-gray-50 to-blue-50 border-2 border-dashed border-blue-200 rounded-2xl p-4 md:p-6">
+            <label class="block text-xs md:text-sm font-bold text-gray-700 mb-3 md:mb-4 flex items-center gap-2">
+              <svg class="w-4 h-4 md:w-5 md:h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
               </svg>
               Atau masukkan nominal manual:
             </label>
-            <div class="flex gap-4">
+            <div class="space-y-4">
               <input 
                 v-model.number="manualAmount" 
                 type="number" 
-                class="flex-1 border-2 border-gray-200 bg-white p-4 rounded-2xl outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all text-lg font-bold" 
+                class="w-full border-2 border-gray-200 bg-white p-3 md:p-4 rounded-xl md:rounded-2xl outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all text-base md:text-lg font-bold" 
                 placeholder="Contoh: 50000"
               />
               <button 
                 @click="handleSaveMoney" 
                 :disabled="!manualAmount || manualAmount <= 0"
-                class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-8 py-4 rounded-2xl font-bold hover:shadow-2xl hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                class="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white py-3 md:py-4 rounded-xl md:rounded-2xl text-sm md:text-base font-bold hover:shadow-2xl hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                Simpan
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                <span>Simpan</span>
               </button>
             </div>
           </div>
@@ -1045,6 +1090,12 @@ import axios from 'axios'
 
 const router = useRouter()
 
+// ==================== API CONFIGURATION ====================
+// Get API base URL - works for both localhost and network access
+const API_BASE_URL = window.location.hostname === 'localhost' 
+  ? 'http://localhost:8000'
+  : `http://${window.location.hostname}:8000`
+
 // ==================== STATE MANAGEMENT ====================
 const currentTab = ref('tabungan')
 const showCreateModal = ref(false)
@@ -1237,14 +1288,14 @@ const toggleMenu = (id) => {
 // Fetch all savings plans
 const fetchPlans = async () => {
   try {
-    const response = await axios.get('http://127.0.0.1:8000/plans/1')
+    const response = await axios.get(`${API_BASE_URL}/plans/1`)
     const activePlansData = response.data.active_plans || []
     const brokenPlansData = response.data.history_plans || []
     
     // Fetch total_saved untuk setiap active plan
     for (let plan of activePlansData) {
       try {
-        const detailResponse = await axios.get(`http://127.0.0.1:8000/plans/${plan.id}/logs`)
+        const detailResponse = await axios.get(`${API_BASE_URL}/plans/${plan.id}/logs`)
         plan.total_saved = detailResponse.data.total_saved || 0
         plan.progress_percentage = detailResponse.data.progress_percentage || 0
       } catch (err) {
@@ -1270,7 +1321,7 @@ const handleCreate = async () => {
   }
 
   try {
-    await axios.post('http://127.0.0.1:8000/plans/create', {
+    await axios.post(`${API_BASE_URL}/plans/create`, {
       user_id: newPlan.value.user_id,
       name: newPlan.value.name,
       target_amount: newPlan.value.target_amount,
@@ -1302,7 +1353,7 @@ const openDetail = async (plan) => {
   currentLogPage.value = 1
   
   try {
-    const response = await axios.get(`http://127.0.0.1:8000/plans/${plan.id}/logs`)
+    const response = await axios.get(`${API_BASE_URL}/plans/${plan.id}/logs`)
     planDetail.value = {
       logs: response.data.logs || [],
       total_saved: response.data.total_saved || 0,
@@ -1331,7 +1382,7 @@ const handleSaveMoney = async () => {
 
   try {
     const response = await axios.post(
-      `http://127.0.0.1:8000/plans/${selectedPlan.value.id}/save`, 
+      `${API_BASE_URL}/plans/${selectedPlan.value.id}/save`, 
       { amount: manualAmount.value }
     )
     
@@ -1367,6 +1418,11 @@ const startCamera = async () => {
   cameraError.value = ''
   
   try {
+    // Check if mediaDevices is available (requires HTTPS on non-localhost)
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      throw new Error('HTTPS_REQUIRED')
+    }
+    
     // Request camera access
     const stream = await navigator.mediaDevices.getUserMedia({ 
       video: { 
@@ -1387,7 +1443,9 @@ const startCamera = async () => {
     }
   } catch (error) {
     console.error('Camera error:', error)
-    if (error.name === 'NotAllowedError') {
+    if (error.message === 'HTTPS_REQUIRED') {
+      cameraError.value = '⚠️ Kamera memerlukan koneksi HTTPS. Akses melalui localhost atau gunakan input manual.'
+    } else if (error.name === 'NotAllowedError') {
       cameraError.value = 'Akses kamera ditolak. Silakan izinkan akses kamera.'
     } else if (error.name === 'NotFoundError') {
       cameraError.value = 'Kamera tidak ditemukan pada perangkat ini.'
@@ -1454,7 +1512,7 @@ const captureAndDetect = async () => {
     formData.append('image', blob, 'capture.jpg')
     
     // Send to detection API
-    const response = await axios.post('http://127.0.0.1:8000/detect', formData, {
+    const response = await axios.post(`${API_BASE_URL}/detect`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -1502,7 +1560,7 @@ const confirmDetection = async () => {
     const banknoteCount = detectionResult.value.banknotes.length // Simpan dulu sebelum di-reset
     
     const response = await axios.post(
-      `http://127.0.0.1:8000/plans/${selectedPlan.value.id}/save`, 
+      `${API_BASE_URL}/plans/${selectedPlan.value.id}/save`, 
       { amount: totalAmount }
     )
     
@@ -1547,7 +1605,7 @@ const confirmBongkar = async () => {
   showBongkarModal.value = false
 
   try {
-    await axios.put(`http://127.0.0.1:8000/plans/bongkar/${selectedPlan.value.id}`)
+    await axios.put(`${API_BASE_URL}/plans/bongkar/${selectedPlan.value.id}`)
     
     showNotification('success', 'Berhasil Dibongkar!', 
       `Tabungan "${selectedPlan.value.name}" berhasil dibongkar`,
@@ -1585,7 +1643,7 @@ const deletePlan = async () => {
   if (!planToDelete.value) return
   
   try {
-    await axios.delete(`http://127.0.0.1:8000/plans/${planToDelete.value.id}`)
+    await axios.delete(`${API_BASE_URL}/plans/${planToDelete.value.id}`)
     showDeleteModal.value = false
     planToDelete.value = null
     showNotification('success', 'Berhasil Dihapus!', 'Tabungan berhasil dihapus')
@@ -1605,7 +1663,7 @@ const handleEditSave = async () => {
 
   try {
     await axios.put(
-      `http://127.0.0.1:8000/plans/edit/${selectedPlan.value.id}`, 
+      `${API_BASE_URL}/plans/edit/${selectedPlan.value.id}`, 
       editForm.value
     )
     
