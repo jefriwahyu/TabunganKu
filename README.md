@@ -13,7 +13,6 @@ Aplikasi manajemen tabungan dengan fitur deteksi uang menggunakan kamera (AI-pow
 2. **Login**
    - UI modern dengan gradient background
    - Form validation
-   - Default credentials: admin/admin
 
 3. **Dashboard dengan Tab Navigation**
    - **Tab Tabungan Aktif**: Menampilkan daftar tabungan yang masih berjalan
@@ -73,7 +72,7 @@ Aplikasi manajemen tabungan dengan fitur deteksi uang menggunakan kamera (AI-pow
 ### 1. Clone Repository
 ```bash
 git clone <repository-url>
-cd tabungan-ku
+cd TabunganKu
 ```
 
 ### 2. Setup Backend
@@ -99,7 +98,7 @@ pip install fastapi sqlalchemy pymysql uvicorn python-dotenv
 ### 3. Setup Frontend
 
 ```bash
-cd tabungan-ku
+cd TabunganKu
 
 # Install dependencies
 npm install
@@ -112,14 +111,14 @@ npm run dev
 
 ### Terminal 1: Backend (FastAPI)
 ```bash
-# Di root folder (tabungan-ku/)
+# Di root folder (TabunganKu/)
 .\venv\Scripts\Activate.ps1
 uvicorn main:app --reload --host 127.0.0.1 --port 8000
 ```
 
 ### Terminal 2: Frontend (Vite)
 ```bash
-# Di folder tabungan-ku/tabungan-ku/
+# Di folder TabunganKu/tabungan-ku/
 npm run dev
 ```
 
@@ -131,25 +130,26 @@ Aplikasi akan berjalan di:
 ## 📁 Struktur Database
 
 ### Tabel: `users`
-| Field    | Type    | Description        |
+| Field    | Type    | Description       |
 |----------|---------|-------------------|
 | id       | INT     | Primary key       |
 | username | VARCHAR | Username login    |
 | password | VARCHAR | Password login    |
 
 ### Tabel: `saving_plans`
-| Field         | Type    | Description                    |
+| Field         | Type    | Description                   |
 |---------------|---------|-------------------------------|
 | id            | INT     | Primary key                   |
 | user_id       | INT     | Foreign key ke users          |
 | name          | VARCHAR | Nama tabungan                 |
 | target_amount | FLOAT   | Target nominal                |
-| currency      | VARCHAR | Mata uang (IDR/USD)          |
+| currency      | VARCHAR | Mata uang (IDR/USD)           |
 | status        | VARCHAR | active/broken                 |
+| broken_at     | DATETIME| Waktu dibongkar               |
 | created_at    | DATETIME| Waktu dibuat                  |
 
 ### Tabel: `saving_logs`
-| Field      | Type    | Description                    |
+| Field      | Type    | Description                   |
 |------------|---------|-------------------------------|
 | id         | INT     | Primary key                   |
 | plan_id    | INT     | Foreign key ke saving_plans   |
@@ -174,8 +174,8 @@ Aplikasi akan berjalan di:
 ### 1. Login
 - Buka aplikasi
 - Tunggu splash screen (2.5 detik)
-- Masukkan username: `admin`
-- Masukkan password: `admin`
+- Masukkan username: `solehud1n`
+- Masukkan password: `1_5`
 - Klik "Masuk"
 
 ### 2. Buat Tabungan Baru
@@ -246,32 +246,7 @@ app.add_middleware(
 # Atau matikan aplikasi yang menggunakan port tersebut
 ```
 
-## 📝 Catatan Pengembangan
-
-### Untuk Fitur AI Detection (Future)
-1. Install TensorFlow.js atau YOLO.js
-2. Training model untuk deteksi uang kertas Indonesia
-3. Implementasi real-time camera feed
-4. Preprocessing gambar untuk meningkatkan akurasi
-5. Multi-object detection untuk menghitung beberapa lembar sekaligus
-
-### Untuk Notifikasi yang Lebih Baik
-1. Install package seperti `vue-toastification`
-2. Replace semua `alert()` dengan toast notifications
-3. Tambahkan success/error states dengan warna berbeda
-
-### Untuk Keamanan
-1. Implement proper authentication (JWT)
-2. Hash password menggunakan bcrypt
-3. Validasi input di backend
-4. Rate limiting untuk API
-5. HTTPS untuk production
-
 ## 👨‍💻 Developer
 
 Tugas Besar - Pengantar AI
-Tahun Ajaran 2025
-
-## 📄 License
-
-MIT License
+Tahun Ajaran 2025/2026
